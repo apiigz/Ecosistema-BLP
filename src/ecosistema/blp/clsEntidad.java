@@ -8,7 +8,7 @@ package ecosistema.blp;
  *
  * @author pazga
  */
-public class clsEntidad {
+public abstract class clsEntidad {
     //declaración atributois
     private String nombre;
     private double energia;

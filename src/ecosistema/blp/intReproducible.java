@@ -9,5 +9,15 @@ package ecosistema.blp;
  * @author pazga
  */
 public interface intReproducible {
+    clsEcosistema reproducirse();
+    boolean puedeReproducirse();
     
+    default void intentarReproduccion(clsEcosistema eco){
+        if (puedeReproducirse()){
+            reproducirse();
+        }
+        else{
+            System.out.println("No puede reproducirse");
+        }
+    }
 }
