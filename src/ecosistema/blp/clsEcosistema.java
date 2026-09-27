@@ -5,6 +5,7 @@
 package ecosistema.blp;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  *
@@ -17,25 +18,122 @@ public class clsEcosistema {
     private enumClima climaActual;
     private int turnoActual;
     
+    //getters y setters
+    public List<clsPlanta> getPlantas() {return plantas;};
+    //necesito que me devuelva la cantidad de plantas, así que hago otro getter (haré lo mismo con los otros):
+    public int getCantidadPlantas(){
+        return plantas.size();
+    }
+    public void setPlantas(){
+        if (getCantidadPlantas() <= 0){
+            ecosistemaColapsado();
+            this.plantas = plantas;
+        }
+        else{
+            this.plantas = plantas;
+        }
+    }
+    
+    public List<clsConejo> getConejos() {return conejos;};
+    public int getCantidadConejos(){
+        return conejos.size();
+    }
+    public void setConejos(){
+        if(getCantidadConejos() == 0){
+            ecosistemaColapsado();
+            this.conejos = conejos;
+        }
+        else{
+            this.conejos = conejos;
+        }
+    }
+    
+    public List<clsLobo> getLobos() {return lobos;};
+    public int getCantidadLobos(){
+        return lobos.size();
+    }
+    public void setLobos(){
+        if(getCantidadLobos() == 0){
+            ecosistemaColapsado();
+            this.lobos = lobos;
+        }
+        else{
+            this.lobos = lobos;
+        }
+    }
+    
+    public enumClima getClimaActual() {return climaActual;};
+    public String getNombreClimaActual(){return this.climaActual.name();};
+    public void setClimaActual(enumClima climaActual){this.climaActual = climaActual;};
+    public void setClimaAleatorio(){
+        Random random = new Random();
+        enumClima[] todosLosClimas = enumClima.values();
+        
+        int indiceAleatorio = random.nextInt(todosLosClimas.length);
+        this.climaActual = todosLosClimas[indiceAleatorio];
+    }
+    
     public void procesarTurno(){
         turnoActual =+ 1;
     }
     
     public void mostrarEstado(){
-        System.out.println("Es...");
+        System.out.println("Clima actual: " + getNombreClimaActual() + "Cantidad plantas: " + getCantidadPlantas() + "Cantidad conejos: " + getCantidadConejos() + "Cantidad lobos: " + getCantidadLobos());
     }
     
     public void agregarEntidad(String tipo){
-        System.out.println("Agregado: " + tipo);
+        String entidadElegida = tipo.toLowerCase();
+        Random random = new Random();
+        
+        if (entidadElegida.contains("lobo")){
+            int exitosCaza = 0;
+            int velocidad = random.nextInt(100 - 50 + 1);
+            double peso = random.nextInt(70 - 30 + 1);
+            String nombre = ("Lobo " + (lobos.size() + 1));
+            double energia = random.nextInt(100 - 60 + 1);
+            int edad = random.nextInt(15 - 9 + 1);
+            boolean viva = true;
+            
+            clsLobo loboNuevo = new clsLobo(exitosCaza, velocidad, peso, nombre, energia, edad, viva);
+            lobos.add(loboNuevo);
+        }
+        else if (entidadElegida.contains("conejo")){
+            int velocidad = random.nextInt(80 - 50 + 1);;
+            double peso = random.nextInt(7 - 3 + 1);
+            String nombre = ("Conejo " + (conejos.size() + 1));
+            double energia = random.nextInt(90-50 + 1);
+            int edad = random.nextInt(4 - 3 + 1);
+            boolean viva = true;
+            
+            clsConejo conejoNuevo = new clsConejo(velocidad, peso, nombre, energia, edad, viva);
+            conejos.add(conejoNuevo);
+        }
+        else if (entidadElegida.contains("planta")){
+            int tamanio = random.nextInt(5 - 4 + 1);
+            String nombre = ("Planta " + (plantas.size() + 1));
+            double energia = 1;
+            int edad = random.nextInt(10 - 9 + 1);
+            boolean viva = true;
+            
+            clsPlanta nuevaPlanta = new clsPlanta(tamanio, nombre, energia, edad, viva);
+            plantas.add(nuevaPlanta);
+        }
+        else{
+            System.out.println("Introduzca el nombre de una entidad para agregar");
+            return;
+        }
     }
     
     public void cambiarClima (enumClima nuevo){
-        climaActual = nuevo;
+        this.climaActual = nuevo;
     }
     
-    public void ecosistemaColapsado(){
+    public boolean ecosistemaColapsado(){
         if (plantas.isEmpty() || conejos.isEmpty() || lobos.isEmpty()){
-            System.out.println("El ecosistema colapso. Fin de la simulación");
+            return true;
+        }
+        else{
+            return false;
         }
     }
     

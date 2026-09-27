@@ -13,7 +13,7 @@ public interface intMortal {
     void morir();
     
     default void verificarMuerte(double energia){
-        if (energia <= 0 && !estaVivo()){
+        if (energia <= 0 && estaVivo()){
             morir();
             System.out.println("Murió...");
         }

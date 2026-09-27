@@ -9,5 +9,5 @@ package ecosistema.blp;
  * @author pazga
  */
 public enum enumClima {
-    SOLEADO, NUBLADO, LLUVIOSO, TORMENTOSO
+    SOLEADO, LLUVIOSO, SEQUIA, INVIERNO,
 }

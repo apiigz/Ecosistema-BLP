@@ -40,12 +40,12 @@ public abstract class clsEntidad {
     }
     
     //edad
-    public int setEdad() {return edad;};
-    public void getEdad(int edad) {this.edad = edad;};
+    public int getEdad() {return edad;};
+    public void setEdad(int edad) {this.edad = edad;};
     
     //viva
-    public boolean setViva() {return viva;};
-    public void getViva(boolean viva) {this.viva = viva;};
+    public boolean getViva() {return viva;};
+    public void setViva(boolean viva) {this.viva = viva;};
     
     //métodos abstractos
     public abstract void actuar(clsEcosistema eco);

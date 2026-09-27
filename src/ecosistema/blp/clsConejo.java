@@ -3,6 +3,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package ecosistema.blp;
+import java.util.List;
+import java.util.ArrayList;
 
 /**
  *
@@ -15,37 +17,91 @@ public class clsConejo extends clsAnimal implements intReproducible{
     
     @Override
     public void comer(clsEcosistema eco){
-        System.out.println("q");
+        List<clsPlanta> plantas = eco.getPlantas();
+        
+        // en C# era (foreach (tipo variable in coleccion), y lo más parecido en Java es esto
+        for(clsPlanta planta:plantas){ // prompt ia: "se puede aplicar un bucle foreach en Java, como lo es el bucle foreach C# (términos de lógica y sintaxis)?"
+            if (planta.getViva()){
+                int energiaGanada = planta.serComida();
+                this.setEnergia(this.getEnergia() + energiaGanada);
+                break;
+            }
+        }
+        
+        this.setEnergia(this.getEnergia() - 15);
+        
+        if (this.getEnergia() <= 0){
+            morir();
+        }
     }
     
     @Override
     public void mostrarEstado(){
-        System.out.println("q");
+        if (this.getEnergia() < 20){
+            System.out.println("Nombre: " + getNombre() + "Energia: " + getEnergia() + "Peligro: ¡¡Peligro!!");
+        }
+        else{
+            System.out.println("Nombre: " + getNombre() + "Energia: " + getEnergia() + "Peligro: Sin peligro :)");
+        }
     }
     
     @Override
     public void actuar(clsEcosistema eco){
-        System.out.println("q");
+        comer(eco);
+        reproducirse(eco);
     }
     
     @Override
     public void morir(){
-        System.out.println("mori xd");
+        this.setViva(false);
+        this.setEnergia(0);
     }
     
     @Override
     public boolean estaVivo(){
-        return true;
+        return this.getViva();
     }
     
     @Override
-    public boolean puedeReproducirse(){
-        return true;
+    public boolean puedeReproducirse(clsEcosistema eco){
+        double energia = this.getEnergia();
+        if(energia >= 60){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
     
     @Override
-    public clsEcosistema reproducirse(){
-        System.out.println("xd");
-        return null;
+    public void reproducirse(clsEcosistema eco){
+        List<clsConejo> conejos = eco.getConejos();
+        
+        if (puedeReproducirse(eco) && conejos.size() >= 1){
+            int nuevaVelocidad;
+            double nuevoPeso = 50;
+            String nuevoNombre = ("Conejo " + (conejos.size() + 1));
+            double nuevaEnergia = 100;
+            int nuevaEdad = 1;
+            boolean nuevoViva = true;
+            
+            if (Math.random() < 0.5){
+                nuevaVelocidad = this.getVelocidad();
+            }
+            else{
+                int posicionConejoPadre = conejos.indexOf(this);
+                
+                int posicionConejoMadre = posicionConejoPadre + 1;
+                
+                if (posicionConejoMadre >= conejos.size()){
+                    posicionConejoMadre = 0;
+                }
+                
+                clsConejo madre = conejos.get(posicionConejoMadre);
+                nuevaVelocidad = madre.getVelocidad();
+            }
+            
+            conejos.add(new clsConejo(nuevaVelocidad, nuevoPeso, nuevoNombre, nuevaEnergia, nuevaEdad, nuevoViva));
+        }
     }
 }
