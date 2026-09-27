@@ -18,17 +18,21 @@ public class clsConejo extends clsAnimal implements intReproducible{
     @Override
     public void comer(clsEcosistema eco){
         List<clsPlanta> plantas = eco.getPlantas();
+        boolean comio = false;
         
         // en C# era (foreach (tipo variable in coleccion), y lo más parecido en Java es esto
         for(clsPlanta planta:plantas){ // prompt ia: "se puede aplicar un bucle foreach en Java, como lo es el bucle foreach C# (términos de lógica y sintaxis)?"
             if (planta.getViva()){
                 int energiaGanada = planta.serComida();
                 this.setEnergia(this.getEnergia() + energiaGanada);
+                comio = true;
+                System.out.println(this.getNombre() + " comió a " + planta.getNombre());
                 break;
             }
         }
-        
-        this.setEnergia(this.getEnergia() - 15);
+        if (!comio){
+            this.setEnergia(this.getEnergia() - 15);
+        }
         
         if (this.getEnergia() <= 0){
             morir();
@@ -55,6 +59,7 @@ public class clsConejo extends clsAnimal implements intReproducible{
     public void morir(){
         this.setViva(false);
         this.setEnergia(0);
+        System.out.println(this.getNombre() + " se murió ");
     }
     
     @Override
@@ -77,7 +82,7 @@ public class clsConejo extends clsAnimal implements intReproducible{
     public void reproducirse(clsEcosistema eco){
         List<clsConejo> conejos = eco.getConejos();
         
-        if (puedeReproducirse(eco) && conejos.size() >= 1){
+        if (puedeReproducirse(eco) && conejos.size() >= 2){
             int nuevaVelocidad;
             double nuevoPeso = 50;
             String nuevoNombre = ("Conejo " + (conejos.size() + 1));

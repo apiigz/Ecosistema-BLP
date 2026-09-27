@@ -11,12 +11,11 @@ package ecosistema.blp;
 public interface intReproducible {
     void reproducirse(clsEcosistema eco);
     boolean puedeReproducirse(clsEcosistema eco);
-    
-    default void intentarReproduccion(clsEcosistema eco){
-        if (puedeReproducirse(eco)){
+
+    default void intentarReproduccion(clsEcosistema eco) {
+        if (puedeReproducirse(eco)) {
             reproducirse(eco);
-        }
-        else{
+        } else {
             System.out.println("No puede reproducirse");
         }
     }

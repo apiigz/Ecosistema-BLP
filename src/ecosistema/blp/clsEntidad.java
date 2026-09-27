@@ -32,11 +32,7 @@ public abstract class clsEntidad {
     //energia
     public double getEnergia() {return energia;};
     public void setEnergia(double energia){
-        if (energia < 0){
-            System.out.println("La energia no puede ser negativa");
-            energia = 0;
-            this.energia = energia;
-        }
+        this.energia = Math.max(0, energia);
     }
     
     //edad

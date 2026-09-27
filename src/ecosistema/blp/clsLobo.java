@@ -16,8 +16,8 @@ public class clsLobo extends clsAnimal {
     private int exitosCaza;
     
     public clsLobo(int exitosCaza, int velocidad, double peso, String nombre, double energia, int edad, boolean viva){
-        this.exitosCaza = exitosCaza;
         super(velocidad, peso, nombre, energia, edad, viva);
+        this.exitosCaza = exitosCaza;
     }
     
     //getters y setters
@@ -27,50 +27,39 @@ public class clsLobo extends clsAnimal {
     @Override
     public void comer(clsEcosistema eco){
         List<clsConejo> conejos = eco.getConejos();
-        
         //prompt ia: "cómo puedo elegir un indice aleatorio de una lista de objetos en Java?"
         if (!conejos.isEmpty()){
             int indiceConejoAleatorio = ThreadLocalRandom.current().nextInt(conejos.size());
             clsConejo conejoAleatorio = conejos.get(indiceConejoAleatorio);
+
+            double probabilidad = (this.getEnergia() / 100.0) * 0.7; // Probabilidad b ase del 70% según 100 de energía
             
-            //Lógica energía
-            
-            //Escenario 1: El conejo tiene más energía (tiene más chances de escapar)
-            if (conejoAleatorio.getEnergia() > this.getEnergia()){
-                if (Math.random() < 0.7){
-                    this.setEnergia(this.getEnergia() - 15);
-                }
-                else{
-                    this.setEnergia(this.getEnergia() + conejoAleatorio.getEnergia());
-                    conejoAleatorio.morir();
-                    this.setExitosCaza(this.getExitosCaza() + 1);
-                }
+            //El bono del clima
+            if (eco.getClimaActual() == enumClima.INVIERNO){
+                probabilidad += 0.20;
             }
             
-            //Escenario 2: El conejo tiene menos energía (tiene menos chances de escapar)
-            if (conejoAleatorio.getEnergia() > this.getEnergia()){
-                if (Math.random() > 0.7){
-                    this.setEnergia(this.getEnergia() + conejoAleatorio.getEnergia());
-                    conejoAleatorio.morir();
-                    this.setExitosCaza(this.getExitosCaza() + 1);
-                }
-                else{
-                    this.setEnergia(this.getEnergia() - 15);
-                }
+            //Ahora intenta cazar o lobinho
+            if (Math.random() < probabilidad){
+                this.setEnergia(this.getEnergia() + conejoAleatorio.getEnergia());
+                conejoAleatorio.morir();
+                this.setExitosCaza(this.getExitosCaza() + 1);
+                System.out.println(getNombre() + " cazó con éxito a " + conejoAleatorio.getNombre());
             }
-            
-            //Escenario 3: El conejo y el lobo tienen la misma energía (el conejo tiene 50% de chances de escapar)
-            if (conejoAleatorio.getEnergia() > this.getEnergia()){
-                if (Math.random() < 0.5){
-                    this.setEnergia(this.getEnergia() - 15);
-                }
-                else{
-                    this.setEnergia(this.getEnergia() + conejoAleatorio.getEnergia());
-                    conejoAleatorio.morir();
-                    this.setExitosCaza(this.getExitosCaza() + 1);
-                }
+            else{
+                this.setEnergia(this.getEnergia() - 15);
+                System.out.println(conejoAleatorio.getNombre() + " se safó de " + this.getNombre());
             }
-        }  
+        }
+        else{
+            return;
+        }
+    }
+    
+    private void exitoCaza(clsConejo conejo){
+        this.setEnergia(this.getEnergia() + conejo.getEnergia());
+        conejo.morir();
+        this.exitosCaza += 1;
     }
     
     @Override
@@ -87,6 +76,7 @@ public class clsLobo extends clsAnimal {
     public void morir(){
         this.setViva(false);
         this.setEnergia(0);
+        System.out.println(this.getNombre() + " se murió ");
     }
     
     @Override

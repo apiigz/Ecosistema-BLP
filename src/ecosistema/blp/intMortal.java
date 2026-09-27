@@ -15,7 +15,6 @@ public interface intMortal {
     default void verificarMuerte(double energia){
         if (energia <= 0 && estaVivo()){
             morir();
-            System.out.println("Murió...");
         }
     }
 }

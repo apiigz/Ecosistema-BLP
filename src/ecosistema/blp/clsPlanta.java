@@ -12,17 +12,17 @@ import java.util.Random;
  *
  * @author pazga
  */
-public class clsPlanta extends clsEntidad implements intReproducible {
+public class clsPlanta extends clsEntidad implements intReproducible, intMortal {
     private int tamanio;
     
     public clsPlanta(int tamanio, String nombre, double energia, int edad, boolean viva){
-        this.tamanio = tamanio;
         super(nombre, energia, edad, viva);
+        this.tamanio = tamanio;
     }
     
     //getters y setters
     public int getTamanio() {return tamanio;};
-    public void getTamanio(int tamanio){
+    public void setTamanio(int tamanio){
         if (tamanio < 1){
             tamanio = 1;
             this.tamanio = tamanio;
@@ -54,35 +54,63 @@ public class clsPlanta extends clsEntidad implements intReproducible {
     
     @Override
     public boolean puedeReproducirse(clsEcosistema eco){
-        if (!eco.getClimaActual().equals("SEQUIA") || !eco.getClimaActual().equals("INVIERNO")){
+        if (eco.getClimaActual() == enumClima.INVIERNO){
             return false;
         }
-        else{
-            return true;
-        }
+        return getViva() && getEnergia() >= 10;
     }
     
     @Override
-    public void reproducirse(clsEcosistema eco){
+    public void reproducirse(clsEcosistema eco){        
+        if (!puedeReproducirse(eco)){
+            return;
+        }
         List<clsPlanta> plantas = eco.getPlantas();
         
-        if (puedeReproducirse(eco) && plantas.size() >= 0){
-            int nuevoTamanio;
-            String nuevoNombre = ("Planta " + (plantas.size() + 1));
-            double nuevaEnergia = 1;
-            int nuevaEdad = 1;
-            boolean nuevoViva = true;
+        double probabilidadBase = 0.3; //Supongamos que es del 30%
+        
+        if (eco.getClimaActual() == enumClima.SOLEADO){
+            probabilidadBase *= 1.5; 
+        }
+        else if(eco.getClimaActual() == enumClima.LLUVIOSO){
+            probabilidadBase *= 2.0;
+        }
+        else if (eco.getClimaActual() == enumClima.SEQUIA){
+            probabilidadBase *= 0.5;
+        }
+        
+        if (Math.random() < probabilidadBase){
             
+            int nuevoTamanio;
             if (Math.random() < 0.9){
                 nuevoTamanio = this.getTamanio();
             }
             else{
-                //Esto es igual a C#...
-                Random random = new Random();
-                nuevoTamanio = random.nextInt(5) + 1;
+                nuevoTamanio = (int) (Math.random() * 5) + 1;
             }
             
-            plantas.add(new clsPlanta(nuevoTamanio, nuevoNombre, nuevaEnergia, nuevaEdad, nuevoViva));
+            String nuevoNombre = "Planta " + (plantas.size() + 1);
+            double nuevaEnergia = 20;
+            int nuevaEdad = 0;
+            boolean nuevoViva = true;
+            
+            clsPlanta nuevaPlanta = new clsPlanta( nuevoTamanio, nuevoNombre, nuevaEnergia, nuevaEdad, nuevoViva);
+            plantas.add(nuevaPlanta);
+            
+            this.setEnergia(this.getEnergia() - 10);
+            
+            System.out.println(getNombre() + " se reprodujo y nació: " + nuevoNombre);
         }
+    }
+    
+    @Override
+    public void morir(){
+        this.setViva(false);
+        this.setEnergia(0);
+    }
+    
+    @Override
+    public boolean estaVivo(){
+        return this.getViva();
     }
 }

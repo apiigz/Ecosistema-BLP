@@ -18,6 +18,16 @@ public class clsEcosistema {
     private enumClima climaActual;
     private int turnoActual;
     
+    int muertesPlantas;
+    int nacimientosPlantas;
+    int muertesConejos;
+    int nacimientosConejos;
+    int muertesLobos;
+    int nacimientosLobos;
+    List<String> eventosTurnos = new ArrayList<>();
+    
+    int totalLobosAgregados = 0;
+    
     //getters y setters
     public List<clsPlanta> getPlantas() {return plantas;};
     //necesito que me devuelva la cantidad de plantas, así que hago otro getter (haré lo mismo con los otros):
@@ -73,12 +83,59 @@ public class clsEcosistema {
         this.climaActual = todosLosClimas[indiceAleatorio];
     }
     
+    public int getMuertesPlantas() {return muertesPlantas;};
+    public void setMuertesPlantas(int muertesPlantas) {this.muertesPlantas = muertesPlantas;};
+    
+    public int getNacimientosPlantas() {return nacimientosPlantas;};
+    public void setNacimientosPlantas(int nacimientosPlantas) {this.nacimientosPlantas = nacimientosPlantas;};
+    
+    public int getMuertesConejos() {return muertesConejos;};
+    public void setMuertesConejos(int muertesConejos) {this.muertesConejos = muertesConejos;};
+    
+    public int getNacimientosConejos() {return nacimientosConejos;};
+    public void setNacimientosConejos(int nacimientosConejos) {this.nacimientosConejos = nacimientosConejos;};
+    
+    public int getMuertesLobos() {return muertesLobos;};
+    public void setMuertesLobos(int muertesLobos) {this.muertesLobos = muertesLobos;};
+    
+    public int getNacimientosLobos() {return nacimientosLobos;};
+    public void setNacimientosLobos(int nacimientosLobos) {this.nacimientosLobos = nacimientosLobos;};
+    
     public void procesarTurno(){
-        turnoActual =+ 1;
+        turnoActual += 1;
+        
+        //Al princio, las plantas se intentan reproducir
+        for (clsPlanta planta: new ArrayList<>(plantas)){ //Tuvimos erroes, y al consultarle a la IA fue por qué recorriamos una lista que estaba ya recorriendose. 
+            if (planta.getViva()){
+                planta.actuar(this);
+            }
+        }
+        
+        //Los conejos ahora comen y luego se intentan reproducir
+        for (clsConejo conejo: new ArrayList<>(conejos)){ //Al crear "new ArrayList<>" este error ya no sucede.
+            if (conejo.getViva()){
+                conejo.actuar(this);
+            }
+        }
+        
+        //Los lobos ahora cazan
+        for (clsLobo lobo: new ArrayList<>(lobos)){
+            if (lobo.getViva()){
+                lobo.actuar(this);
+            }
+        }
+        
+        //Efectos de clima sobre la energía y el envejecimiento
+        aplicarEfectosClimayEnvejecer();
+        
+        //Sacamos de la lista a los que, lastimosamente, se murieron
+        plantas.removeIf(planta -> !planta.getViva());
+        conejos.removeIf(conejo -> !conejo.getViva());
+        lobos.removeIf(lobo -> !lobo.getViva());
     }
     
     public void mostrarEstado(){
-        System.out.println("Clima actual: " + getNombreClimaActual() + "Cantidad plantas: " + getCantidadPlantas() + "Cantidad conejos: " + getCantidadConejos() + "Cantidad lobos: " + getCantidadLobos());
+        System.out.println("Clima actual: " + getNombreClimaActual() + " Cantidad plantas: " + getCantidadPlantas() + " Cantidad conejos: " + getCantidadConejos() + " Cantidad lobos: " + getCantidadLobos());
     }
     
     public void agregarEntidad(String tipo){
@@ -111,7 +168,7 @@ public class clsEcosistema {
         else if (entidadElegida.contains("planta")){
             int tamanio = random.nextInt(5 - 4 + 1);
             String nombre = ("Planta " + (plantas.size() + 1));
-            double energia = 1;
+            double energia = random.nextInt(60 - 30 + 1) + 30;
             int edad = random.nextInt(10 - 9 + 1);
             boolean viva = true;
             
@@ -121,6 +178,52 @@ public class clsEcosistema {
         else{
             System.out.println("Introduzca el nombre de una entidad para agregar");
             return;
+        }
+    }
+    
+    public void agregarEntidad(String tipo, double energiaInicial) {
+        if (energiaInicial > 0){
+            
+        String entidadElegida = tipo.toLowerCase();
+        Random random = new Random();
+        
+            if (entidadElegida.contains("lobo")){
+                int exitosCaza = 0;
+                int velocidad = random.nextInt(100 - 50 + 1);
+                double peso = random.nextInt(70 - 30 + 1);
+                String nombre = ("Lobo " + (lobos.size() + 1));
+                double energia = energiaInicial;
+                int edad = random.nextInt(15 - 9 + 1);
+                boolean viva = true;
+
+                clsLobo loboNuevo = new clsLobo(exitosCaza, velocidad, peso, nombre, energia, edad, viva);
+                lobos.add(loboNuevo);
+            }
+            else if (entidadElegida.contains("conejo")){
+                int velocidad = random.nextInt(80 - 50 + 1);;
+                double peso = random.nextInt(7 - 3 + 1);
+                String nombre = ("Conejo " + (conejos.size() + 1));
+                double energia = energiaInicial;
+                int edad = random.nextInt(4 - 3 + 1);
+                boolean viva = true;
+
+                clsConejo conejoNuevo = new clsConejo(velocidad, peso, nombre, energia, edad, viva);
+                conejos.add(conejoNuevo);
+            }
+            else if (entidadElegida.contains("planta")){
+                int tamanio = random.nextInt(5 - 4 + 1);
+                String nombre = ("Planta " + (plantas.size() + 1));
+                double energia = energiaInicial;
+                int edad = random.nextInt(10 - 9 + 1);
+                boolean viva = true;
+
+                clsPlanta nuevaPlanta = new clsPlanta(tamanio, nombre, energia, edad, viva);
+                plantas.add(nuevaPlanta);
+            }
+            else{
+                System.out.println("Introduzca el nombre de una entidad para agregar");
+                return;
+            }
         }
     }
     
@@ -147,5 +250,52 @@ public class clsEcosistema {
         System.out.println("Plantas restantes: " + plantas.size());
         System.out.println("Clima actual: " + clAct);
         System.out.println("Cantidad de turnos: " + tnAct);
+    }
+    
+    //
+    private void aplicarEfectosClimayEnvejecer(){
+        //Primero los conejitos
+        for (clsConejo conejo: conejos){
+            if (!conejo.estaVivo()){
+                continue; // => contrario al return, hace que avance el código
+            }
+            if (climaActual == enumClima.SOLEADO){
+                conejo.setEnergia(conejo.getEnergia() + 5);
+            }
+            else if (climaActual == enumClima.LLUVIOSO){
+                conejo.setEnergia(conejo.getEnergia() + 3);
+            }
+            else if (climaActual == enumClima.SEQUIA){
+                conejo.setEnergia(conejo.getEnergia() - 5);
+            }
+            else if (climaActual == enumClima.INVIERNO){
+                conejo.setEnergia(conejo.getEnergia() - 8);
+            }
+        }
+        
+        //os lobinhos
+        if (climaActual == enumClima.LLUVIOSO){
+            for (clsLobo lobo: lobos){
+                if (lobo.estaVivo()){
+                    lobo.setEnergia(lobo.getEnergia() - 5);
+                }
+            }
+        }
+        
+        //El envejecimiento estandar, -1 de energía y +1 de edad. Además de la verificación de vida
+        plantas.forEach(planta ->{
+            planta.envejecer();
+            planta.verificarMuerte(planta.getEnergia());
+        }); //muy js esto
+        
+        conejos.forEach(conejo ->{
+            conejo.envejecer();
+            conejo.verificarMuerte(conejo.getEnergia());
+        });
+        
+        lobos.forEach(lobo ->{
+           lobo.envejecer();
+           lobo.verificarMuerte(lobo.getEnergia());
+        });
     }
 }

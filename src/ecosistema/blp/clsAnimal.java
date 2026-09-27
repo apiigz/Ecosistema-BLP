@@ -13,9 +13,9 @@ public abstract class clsAnimal extends clsEntidad implements intMortal {
     private double peso;
     
     public clsAnimal(int velocidad, double peso, String nombre, double energia, int edad, boolean viva){
+        super(nombre, energia, edad, viva);
         this.velocidad = velocidad;
         this.peso = peso;
-        super(nombre, energia, edad, viva);
     }
     
     //getters y setters
