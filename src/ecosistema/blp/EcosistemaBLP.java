@@ -16,15 +16,16 @@ public class EcosistemaBLP {
      */
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-
-        // 1. CONFIGURACIÓN INICIAL
-        System.out.println("=== CONFIGURACIÓN DEL ECOSISTEMA ===");
+        
+        //Configuración inicial de la simulación del ecosistema
+        System.out.println("--- CONFIGURACIÓN DEL ECOSISTEMA ---");
         int cantPlantas = pedirNumero(sc, "Cantidad inicial de plantas", 5, 30);
         int cantConejos = pedirNumero(sc, "Cantidad inicial de conejos", 2, 15);
         int cantLobos = pedirNumero(sc, "Cantidad inicial de lobos", 1, 5);
         int totalTurnos = pedirNumero(sc, "Cantidad total de turnos", 10, 50);
-
-        System.out.println("\nSeleccione el clima inicial:");
+        
+        //Selección del clima inicial
+        System.out.println("Seleccione el clima inicial:");
         System.out.println("1. Soleado | 2. Lluvioso | 3. Sequía | 4. Invierno");
         int opcionClima = pedirNumero(sc, "Opción", 1, 4);
 
@@ -32,19 +33,20 @@ public class EcosistemaBLP {
         if (opcionClima == 2) climaInicial = enumClima.LLUVIOSO;
         else if (opcionClima == 3) climaInicial = enumClima.SEQUIA;
         else if (opcionClima == 4) climaInicial = enumClima.INVIERNO;
-
-        // Confirmar configuración
-        System.out.println("\n--- Resumen de Configuración ---");
+        
+        //Resumen de la configuración inicial
+        System.out.println("--- Resumen de Configuración ---");
         System.out.println("Plantas: " + cantPlantas + " | Conejos: " + cantConejos + " | Lobos: " + cantLobos);
         System.out.println("Clima: " + climaInicial.name() + " | Turnos: " + totalTurnos);
         System.out.print("¿Confirmar e iniciar simulación? (S/N): ");
         String confirmacion = sc.next();
-        if (!confirmacion.equalsIgnoreCase("s")) {
+        
+        if (!confirmacion.equalsIgnoreCase("s")) { //si la confirmación no es igual a "s"...
             System.out.println("Simulación cancelada.");
             return;
         }
-
-        // Instanciar y poblar ecosistema
+        
+        //Creación del ecosistema
         clsEcosistema eco = new clsEcosistema();
         eco.setClimaActual(climaInicial);
 
@@ -52,33 +54,33 @@ public class EcosistemaBLP {
         for (int i = 0; i < cantConejos; i++) eco.agregarEntidad("conejo");
         for (int i = 0; i < cantLobos; i++) eco.agregarEntidad("lobo");
 
-        sc.nextLine(); // Consumir salto de línea residual
-
-        // 2. LOOP PRINCIPAL DE SIMULACIÓN
+        sc.nextLine(); 
+        
+        //Arranca el turno
         int turno = 0;
         while (turno < totalTurnos && !eco.ecosistemaColapsado()) {
             turno++;
-            System.out.println("\n========================================");
+            System.out.println("----------------------------------------");
             System.out.println("            TURNO " + turno);
-            System.out.println("========================================");
+            System.out.println("----------------------------------------");
 
             eco.procesarTurno();
             eco.mostrarEstado();
 
-            // 3. SISTEMA DE INTERVENCIÓN (cada 3 turnos)
+            //Preguntamos si llegó el turno para la intervención
             if (turno % 3 == 0 && turno < totalTurnos && !eco.ecosistemaColapsado()) {
                 menuIntervencion(eco, sc);
             }
 
-            // Esperar Enter para el próximo turno
-            System.out.print("\nPresione [ENTER] para avanzar al siguiente turno...");
+            //Hacemos que el usuario presione enter para seguir
+            System.out.print("Presione [ENTER] para avanzar al siguiente turno...");
             sc.nextLine();
         }
 
-        // 4. REPORTE FINAL
-        System.out.println("\n========================================");
+        //Reporte final
+        System.out.println("----------------------------------------");
         System.out.println("        REPORTE FINAL DE SIMULACIÓN     ");
-        System.out.println("========================================");
+        System.out.println("----------------------------------------");
 
         if (eco.ecosistemaColapsado()) {
             System.out.println("Causa de fin: COLAPSO DEL ECOSISTEMA");
@@ -89,7 +91,7 @@ public class EcosistemaBLP {
             System.out.println("Causa de fin: Turnos completados exitosamente (" + totalTurnos + " turnos)");
         }
 
-        // Lobo con más cacerías exitosas
+        // lobinhos con más cacerías exitosas
         clsLobo mejorLobo = null;
         for (clsLobo l : eco.getLobos()) {
             if (mejorLobo == null || l.getExitosCaza() > mejorLobo.getExitosCaza()) {
@@ -105,6 +107,7 @@ public class EcosistemaBLP {
         eco.generarReporteFinal();
     }
     
+    //Función auxiliar para evitar que el usuario ingrese cualquier cosa
     public static int pedirNumero(Scanner scanner, String mensaje, int min, int max) {
         int valor;
         do {
@@ -117,21 +120,29 @@ public class EcosistemaBLP {
         } while (valor < min || valor > max);
         return valor;
     }
-
+    
+    //Método auxiliar para el menú (cuando pasan 3 turnos)
     private static void menuIntervencion(clsEcosistema eco, Scanner sc) {
-        System.out.println("\n--- INTERVENCIÓN DIVINA (Turno divisible por 3) ---");
+        //Menu de acciones
+        System.out.println("--- INTERVENCIÓN DEL DIOS (o diablo) CONEJO (Turno divisible por 3) ---");
         System.out.println("1. Cambiar Clima");
         System.out.println("2. Agregar Entidad");
         System.out.println("3. Solo avanzar");
         int op = pedirNumero(sc, "Elija una acción", 1, 3);
-
+        
+        //Lógica de cada acción
         if (op == 1) {
             System.out.println("1. Soleado | 2. Lluvioso | 3. Sequía | 4. Invierno");
             int c = pedirNumero(sc, "Nuevo clima", 1, 4);
             enumClima nuevo = enumClima.SOLEADO;
-            if (c == 2) nuevo = enumClima.LLUVIOSO;
+            switch (c){
+                case 2: nuevo = enumClima.LLUVIOSO; break;
+                case 3: nuevo = enumClima.SEQUIA; break;
+                case 4: nuevo = enumClima.INVIERNO; break;
+            }
+            /*if (c == 2) nuevo = enumClima.LLUVIOSO;
             else if (c == 3) nuevo = enumClima.SEQUIA;
-            else if (c == 4) nuevo = enumClima.INVIERNO;
+            else if (c == 4) nuevo = enumClima.INVIERNO; una forma también de hacerlo, prefiero el switch pq me recuerda a c#*/
 
             System.out.print("¿Confirma cambiar el clima a " + nuevo.name() + "? (S/N): ");
             if (sc.next().equalsIgnoreCase("s")) {
@@ -151,12 +162,12 @@ public class EcosistemaBLP {
 
             System.out.print("¿Confirma agregar esta entidad? (S/N): ");
             if (sc.next().equalsIgnoreCase("s")) {
-                if (ent == 1) eco.agregarEntidad("planta");
-                else if (ent == 2) eco.agregarEntidad("conejo");
-                else if (ent == 3) {
-                    eco.agregarEntidad("lobo");
-                    eco.totalLobosAgregados++;
+                switch (ent){
+                    case 1: eco.agregarEntidad("planta"); break;
+                    case 2: eco.agregarEntidad("conejo"); break;
+                    case 3: eco.agregarEntidad("lobo"); eco.totalLobosAgregados++; break;
                 }
+                
                 System.out.println("Entidad agregada al ecosistema.");
             }
             sc.nextLine();
