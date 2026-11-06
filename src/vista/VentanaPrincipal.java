@@ -28,21 +28,119 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
+        lblTitulo = new javax.swing.JLabel();
+        lblPlantas = new javax.swing.JLabel();
+        lblConejos = new javax.swing.JLabel();
+        lblLobos = new javax.swing.JLabel();
+        lblTurnos = new javax.swing.JLabel();
+        lblClimainicial = new javax.swing.JLabel();
+        txtConejos = new javax.swing.JTextField();
+        txtPlantas = new javax.swing.JTextField();
+        txtLobos = new javax.swing.JTextField();
+        txtTurnos = new javax.swing.JTextField();
+        btnIniciarSimulacion = new javax.swing.JButton();
+        lblResultado = new javax.swing.JLabel();
+        cmbClima = new javax.swing.JComboBox<String>();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jPanel1.setBackground(new java.awt.Color(0, 153, 102));
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        lblTitulo.setBackground(new java.awt.Color(0, 0, 0));
+        lblTitulo.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        lblTitulo.setForeground(new java.awt.Color(0, 0, 0));
+        lblTitulo.setText("Simulador del Ecosistema");
+        lblTitulo.setName("lblTitulo"); // NOI18N
+        jPanel1.add(lblTitulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 30, -1, -1));
+
+        lblPlantas.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblPlantas.setForeground(new java.awt.Color(0, 0, 0));
+        lblPlantas.setText("Plantas (5-30)");
+        lblPlantas.setName(""); // NOI18N
+        jPanel1.add(lblPlantas, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 130, -1, -1));
+
+        lblConejos.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblConejos.setForeground(new java.awt.Color(0, 0, 0));
+        lblConejos.setText("Conejos (2-15)");
+        jPanel1.add(lblConejos, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 180, -1, -1));
+
+        lblLobos.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblLobos.setForeground(new java.awt.Color(0, 0, 0));
+        lblLobos.setText("Lobos(1-5)");
+        jPanel1.add(lblLobos, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 240, -1, -1));
+
+        lblTurnos.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblTurnos.setForeground(new java.awt.Color(0, 0, 0));
+        lblTurnos.setText("Turnos (10-50)");
+        jPanel1.add(lblTurnos, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 300, -1, -1));
+
+        lblClimainicial.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblClimainicial.setForeground(new java.awt.Color(0, 0, 0));
+        lblClimainicial.setText("Clima inicial");
+        jPanel1.add(lblClimainicial, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 360, -1, -1));
+
+        txtConejos.setBackground(new java.awt.Color(255, 255, 255));
+        txtConejos.setOpaque(true);
+        jPanel1.add(txtConejos, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 180, 240, -1));
+
+        txtPlantas.setBackground(new java.awt.Color(255, 255, 255));
+        txtPlantas.setOpaque(true);
+        txtPlantas.addActionListener(this::txtPlantasActionPerformed);
+        jPanel1.add(txtPlantas, new org.netbeans.lib.awtextra.AbsoluteConstraints(311, 130, 240, -1));
+
+        txtLobos.setBackground(new java.awt.Color(255, 255, 255));
+        txtLobos.setOpaque(true);
+        jPanel1.add(txtLobos, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 240, 240, -1));
+
+        txtTurnos.setBackground(new java.awt.Color(255, 255, 255));
+        txtTurnos.setOpaque(true);
+        jPanel1.add(txtTurnos, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 300, 240, -1));
+
+        btnIniciarSimulacion.setBackground(new java.awt.Color(255, 255, 255));
+        btnIniciarSimulacion.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btnIniciarSimulacion.setForeground(new java.awt.Color(0, 0, 0));
+        btnIniciarSimulacion.setText("Iniciar Simulación");
+        btnIniciarSimulacion.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnIniciarSimulacion.setOpaque(true);
+        jPanel1.add(btnIniciarSimulacion, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 410, 130, 30));
+
+        lblResultado.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblResultado.setForeground(new java.awt.Color(255, 51, 51));
+        lblResultado.setText("La cantidad de lobos tiene que estar entre 1 y 5.");
+        jPanel1.add(lblResultado, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 460, -1, -1));
+
+        cmbClima.setBackground(new java.awt.Color(255, 255, 255));
+        cmbClima.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        cmbClima.setForeground(new java.awt.Color(0, 0, 0));
+        cmbClima.setModel(new javax.swing.DefaultComboBoxModel<String>(new String[] { "Soleado", "Lluvioso" }));
+        cmbClima.setOpaque(true);
+        jPanel1.add(cmbClima, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 360, 240, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 712, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 681, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void txtPlantasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPlantasActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtPlantasActionPerformed
 
     /**
      * @param args the command line arguments
@@ -70,5 +168,19 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnIniciarSimulacion;
+    private javax.swing.JComboBox<String> cmbClima;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel lblClimainicial;
+    private javax.swing.JLabel lblConejos;
+    private javax.swing.JLabel lblLobos;
+    private javax.swing.JLabel lblPlantas;
+    private javax.swing.JLabel lblResultado;
+    private javax.swing.JLabel lblTitulo;
+    private javax.swing.JLabel lblTurnos;
+    private javax.swing.JTextField txtConejos;
+    private javax.swing.JTextField txtLobos;
+    private javax.swing.JTextField txtPlantas;
+    private javax.swing.JTextField txtTurnos;
     // End of variables declaration//GEN-END:variables
 }
