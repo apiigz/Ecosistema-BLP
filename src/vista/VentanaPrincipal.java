@@ -8,7 +8,7 @@ package vista;
  *
  * @author riusb
  */
-public class VentanaPrincipal extends javax.swing.JFrame {
+public class VentanaPrincipal extends javax.swing.JFrame implements controlador.IVista  {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(VentanaPrincipal.class.getName());
 
@@ -17,6 +17,40 @@ public class VentanaPrincipal extends javax.swing.JFrame {
      */
     public VentanaPrincipal() {
         initComponents();
+    }
+    
+    private controlador.ControladorSimulacion controlador;
+    
+    public void setControlador(controlador.ControladorSimulacion controlador) {
+        this.controlador = controlador;
+    }
+
+    @Override public void mostrarPantallaConfiguracion() { }
+    @Override public void mostrarPantallaSimulacion() { }
+    @Override public void mostrarPantallaReporte() { }
+
+    @Override public void mostrarContadores(int turno, int turnosTotales, String clima, int plantas, int conejos, int lobos) { }
+    @Override public void mostrarEntidades(Object[][] filas) { }
+    @Override public void mostrarEventos(java.util.List<String> eventos) { }
+    @Override public void mostrarReporte(String[][] filas) { }
+    @Override public void mostrarMensajeEstado(String mensaje) { }
+
+    @Override public void habilitarAvance(boolean habilitado) { }
+    @Override public void habilitarIntervencion(boolean habilitada) { }
+    @Override public void habilitarReporte(boolean habilitado) { }
+
+    @Override public void mostrarErrorConfiguracion(String mensaje) {
+        javax.swing.JOptionPane.showMessageDialog(this, mensaje, "Revisá los datos", javax.swing.JOptionPane.WARNING_MESSAGE);
+    }
+    @Override public void mostrarError(String mensaje) {
+        javax.swing.JOptionPane.showMessageDialog(this, mensaje, "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+    }
+    @Override public void mostrarInfo(String mensaje) {
+        javax.swing.JOptionPane.showMessageDialog(this, mensaje, "Listo", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+    }
+    @Override public boolean confirmar(String pregunta) {
+        return javax.swing.JOptionPane.showConfirmDialog(this, pregunta, "Confirmar", javax.swing.JOptionPane.YES_NO_OPTION)
+                == javax.swing.JOptionPane.YES_OPTION;
     }
 
     /**
