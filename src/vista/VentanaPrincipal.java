@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package vista;
+import modelo.enumClima;
 
 /**
  *
@@ -21,6 +22,11 @@ public class VentanaPrincipal extends javax.swing.JFrame implements controlador.
         btnIniciarSimulacion.addActionListener(evt -> controlador.iniciarSimulacion(
                 txtPlantas.getText(), txtConejos.getText(), txtLobos.getText(),
                 txtTurnos.getText(), (String) cmbClima.getSelectedItem()));
+        
+        for (enumClima clima : enumClima.values()){
+            cmbClima.addItem(clima.name());
+        }
+        
     }
     
     private controlador.ControladorSimulacion controlador;
@@ -72,7 +78,7 @@ public class VentanaPrincipal extends javax.swing.JFrame implements controlador.
         txtTurnos = new javax.swing.JTextField();
         btnIniciarSimulacion = new javax.swing.JButton();
         lblResultado = new javax.swing.JLabel();
-        cmbClima = new javax.swing.JComboBox<String>();
+        cmbClima = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -145,7 +151,6 @@ public class VentanaPrincipal extends javax.swing.JFrame implements controlador.
         cmbClima.setBackground(new java.awt.Color(255, 255, 255));
         cmbClima.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         cmbClima.setForeground(new java.awt.Color(0, 0, 0));
-        cmbClima.setModel(new javax.swing.DefaultComboBoxModel<String>(new String[] { "Soleado", "Lluvioso" }));
         cmbClima.setOpaque(true);
         jPanel1.add(cmbClima, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 360, 240, -1));
 

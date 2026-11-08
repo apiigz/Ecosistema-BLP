@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package vista;
+import modelo.enumClima;
 
 /**
  *
@@ -23,6 +24,10 @@ public class VentanaSimulador extends javax.swing.JFrame implements controlador.
         cmbAnimales.addActionListener(evt -> controlador.elegirTipo((String) cmbAnimales.getSelectedItem()));
         btnHistorial.addActionListener(evt -> controlador.abrirHistorial());
         btnNuevaSimulacion.addActionListener(evt -> controlador.nuevaSimulacion());
+        
+        for (enumClima clima: enumClima.values()){
+            cmbClimas.addItem(clima.name());
+        }
     }
 
     private controlador.ControladorSimulacion controlador;
@@ -352,7 +357,6 @@ public class VentanaSimulador extends javax.swing.JFrame implements controlador.
         cmbClimas.setBackground(java.awt.Color.lightGray);
         cmbClimas.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         cmbClimas.setForeground(new java.awt.Color(0, 0, 0));
-        cmbClimas.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Soleado", "Lluvioso" }));
 
         cmbAnimales.setBackground(java.awt.Color.lightGray);
         cmbAnimales.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
