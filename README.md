@@ -1,8 +1,8 @@
 # Simulador de Ecosistema — versión Swing (IE2)
 
 ## Ejecución
-- NetBeans: _(versión)_ · JDK: _(versión)_ · Sin librerías externas.
-- Abrir el proyecto y ejecutar. Clase principal: `principal.Main`.
+- NetBeans: 31 · JDK: 26 · Instalar la librería "Absolute Layout".
+- Abrir el proyecto en NetBeans.
 - El archivo de guardado se crea solo en `datos/simulacion.txt`.
 
 ## Estructura
@@ -12,17 +12,16 @@
 - `vista/`: `VentanaPrincipal`, hecha con el diseñador de NetBeans.
 - `principal/`: `Main`.
 
-## Integrantes y roles
-- _(nombre)_ — _(rol)_
+## Integrantes
+- Barbero, Gianella
+- Lujan, Federico
+- Paz, Gastón
 
 ## Figma
-_(pegar link)_
+https://www.figma.com/design/JgUDDxgXwTe9f9Cvv7IDPK/Sin-t%C3%ADtulo?node-id=0-1&t=HqYlXzoWWIdd8qeb-1
 
 ## Video explicativo
-_(pegar link)_
+https://drive.google.com/file/d/1O18xuHo36G9cim7fbXqnSX0wc6FkwH3j/view?usp=sharing
 
 ## Desafíos encontrados
-_(ver GUIA.md, sección 5)_
-
-## Uso de IA / herramientas externas
-_(cada integrante enlaza sus conversaciones completas o capturas, rotuladas por persona)_
+- Reestructurar el proyecto con lo visto en clases. Teníamos clases disperas, con enums en el mismo estado, y darle a todo un orden fue, en principio, complicado.
